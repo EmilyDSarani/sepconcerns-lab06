@@ -3,6 +3,7 @@ const twilio = require('twilio');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
+const orders = require('../lib/controllers/orders');
 
 jest.mock('twilio', () => () => ({
   messages: {
@@ -27,4 +28,11 @@ describe('03_separation-of-concerns-demo routes', () => {
         });
       });
   });
+  it('gets the id of a specific message', () =>{
+    return request(app)
+      .get('/api/vi/orders/:id')
+      .then(res =>{
+        expect(res.body).toEqual(expect.any(String))
+      })
+  })
 });
