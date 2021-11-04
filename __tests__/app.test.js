@@ -28,11 +28,18 @@ describe('03_separation-of-concerns-demo routes', () => {
         });
       });
   });
-  it('gets the id of a specific message', () =>{
+  it('gets all of the orders', () => {
+    return request(app)
+      .get('/api/vi/orders/')
+      .then(res => {
+        expect(res.body).toEqual(expect.any(String));
+      });
+  });
+  it('gets the id of a specific message', () => {
     return request(app)
       .get('/api/vi/orders/:id')
-      .then(res =>{
-        expect(res.body).toEqual(expect.any(String))
-      })
-  })
+      .then(res => {
+        expect(res.body).toEqual(expect.any(String));
+      });
+  });
 });
