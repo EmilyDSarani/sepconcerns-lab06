@@ -3,7 +3,7 @@ const twilio = require('twilio');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
-const orders = require('../lib/controllers/orders');
+
 
 jest.mock('twilio', () => () => ({
   messages: {
@@ -12,7 +12,7 @@ jest.mock('twilio', () => () => ({
 }));
 
 describe('03_separation-of-concerns-demo routes', () => {
-  beforeEach(() => {
+  beforeAll(() => {
     return setup(pool);
   });
 
@@ -29,19 +29,26 @@ describe('03_separation-of-concerns-demo routes', () => {
       });
   });
 
-  // it('gets all of the orders', () => {
-  //   return request(app)
-  //     .get('/api/vi/orders/')
-  //     .then(res => {
-  //       expect(res.body).toEqual(expect.any(String));
-  //     });
-  // });
-
   it('gets the id of a specific message', () => {
     return request(app)
-      .get('/api/vi/orders/:id')
+      .get('/api/v1/orders/1')
       .then(res => {
-        expect(res.body).toEqual(expect.any(String));
+        expect(res.body).toEqual({
+          id: '1',
+          quantity: 10
+        });
       });
   });
-});
+
+  it('updates an order by id', () => {
+    return request(app)
+      .put('/api/v1/orders/1')
+      .send({ quantity: 12 })
+      .then(res => {
+        expect(res.body).toEqual({
+          id: '1',
+          quantity: 12
+        });
+      });
+  });
+}); 
